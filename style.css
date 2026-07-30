@@ -61,7 +61,7 @@ body {
 /* ===== Name ===== */
 .name {
   font-weight: 600;
-  font-size: 28px;
+  font-size: clamp(34px, 9vw, 48px);
   letter-spacing: -0.01em;
 }
 
@@ -78,12 +78,11 @@ body {
   margin-top: 40px;
   display: flex;
   justify-content: center;
-  gap: 28px;
+  gap: 26px;
 }
 .icon-links a {
-  color: var(--text);
-  opacity: 0.75;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
 }
 .icon-links a:hover {
   opacity: 1;
@@ -95,6 +94,22 @@ body {
   fill: currentColor;
   display: block;
 }
+
+/* Each platform gets its own brand color */
+.icon-github    { color: var(--text); }
+.icon-github:hover    { color: #A371F7; }
+
+.icon-linkedin  { color: var(--text); }
+.icon-linkedin:hover  { color: #0A66C2; }
+
+.icon-x         { color: var(--text); }
+.icon-x:hover         { color: #1D9BF0; }
+
+.icon-steam     { color: var(--text); }
+.icon-steam:hover     { color: #66C0F4; }
+
+.icon-email     { color: var(--text); }
+.icon-email:hover     { color: #EA4335; }
 
 /* ===== Contact button ===== */
 .contact-btn {
@@ -111,10 +126,17 @@ body {
 }
 .contact-btn:hover { transform: translateY(-2px); opacity: 0.85; }
 
-.flag {
-  margin-top: 24px;
-  width: 26px;
-  display: inline-block;
+/* ===== Flag, pinned to the bottom like bil.al's footer row ===== */
+.flag-footer {
+  position: fixed;
+  bottom: 22px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
