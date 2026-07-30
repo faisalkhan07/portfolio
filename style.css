@@ -16,12 +16,34 @@ html, body {
 }
 
 body {
+  position: relative;
+}
+
+/* ===== Hero screen (first view — unchanged content, now its own section) ===== */
+.hero-screen {
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 24px;
   position: relative;
+  padding: 24px;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation: bounce 2s ease-in-out infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(6px); opacity: 1; }
 }
 
 /* ===== Background animation ===== */
@@ -127,16 +149,48 @@ body {
 .contact-btn:hover { transform: translateY(-2px); opacity: 0.85; }
 
 /* ===== Flag, pinned to the bottom like bil.al's footer row ===== */
-footer {
+.flag-footer {
+  position: fixed;
+  bottom: 22px;
+  left: 0;
+  right: 0;
+  z-index: 2;
   display: flex;
   justify-content: center;
-  padding: 20px 0;
+  font-size: 18px;
+  pointer-events: none;
 }
 
-.flag {
-  width: 26px;
+/* ===== Scroll-reveal quotes (Datacurve-style manifesto) ===== */
+.quotes {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20vh 24px 40vh;
+  display: flex;
+  flex-direction: column;
+  gap: 14vh;
 }
+
+.quote-line {
+  font-size: clamp(20px, 4vw, 30px);
+  line-height: 1.5;
+  text-align: center;
+  color: var(--muted);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease, color 0.8s ease;
+}
+.quote-line.in-view {
+  opacity: 1;
+  transform: translateY(0);
+  color: var(--text);
+}
+.quote-line em { color: var(--text); font-style: normal; border-bottom: 1px solid currentColor; }
 
 @media (prefers-reduced-motion: reduce) {
   .mark .blade { transition: none; }
+  .scroll-hint { animation: none; }
+  .quote-line { transition: none; opacity: 1; transform: none; color: var(--text); }
 }

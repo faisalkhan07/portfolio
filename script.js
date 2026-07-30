@@ -72,3 +72,31 @@ function step_static() {
     ctx.fill();
   });
 }
+
+// ===== Scroll-reveal quotes =====
+// Each .quote-line fades/slides in once it's mostly in view, and stays visible.
+const quoteObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  },
+  { threshold: 0.5 }
+);
+
+document.querySelectorAll('.quote-line').forEach((line) => quoteObserver.observe(line));
+
+// Fade out the "scroll" hint once the person actually starts scrolling
+const scrollHint = document.querySelector('.scroll-hint');
+if (scrollHint) {
+  window.addEventListener(
+    'scroll',
+    () => {
+      scrollHint.style.opacity = window.scrollY > 40 ? '0' : '';
+      scrollHint.style.transition = 'opacity 0.4s ease';
+    },
+    { passive: true }
+  );
+}
