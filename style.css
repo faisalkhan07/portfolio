@@ -128,8 +128,8 @@ body {
 
 /* ===== Flag, pinned to the bottom like bil.al's footer row ===== */
 footer {
-  text-align: center;
-  margin-top: 50px;
+  display: flex;
+  justify-content: center;
   padding: 20px 0;
 }
 
