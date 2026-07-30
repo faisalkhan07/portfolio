@@ -127,10 +127,14 @@ body {
 .contact-btn:hover { transform: translateY(-2px); opacity: 0.85; }
 
 /* ===== Flag, pinned to the bottom like bil.al's footer row ===== */
+footer {
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px 0;
+}
+
 .flag {
-  margin-top: 24px;
   width: 26px;
-  display: inline-block;
 }
 
 @media (prefers-reduced-motion: reduce) {
