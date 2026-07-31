@@ -138,20 +138,35 @@ if (!prefersReducedMotion) {
   });
 }
 
-// ===== Scroll-reveal quotes =====
-// Each .quote-line fades/slides in once it's mostly in view, and stays visible.
-const quoteObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-      }
-    });
-  },
-  { threshold: 0.5 }
-);
+// ===== Pinned scroll quotes =====
+// Figures out how far we've scrolled through the tall .quotes-pin section,
+// converts that into a step index, and toggles .active on the matching line.
+const quotesPin = document.getElementById('quotesPin');
+const quoteLines = document.querySelectorAll('.quote-line');
 
-document.querySelectorAll('.quote-line').forEach((line) => quoteObserver.observe(line));
+function updateQuotesPin() {
+  if (!quotesPin || quoteLines.length === 0) return;
+
+  const rect = quotesPin.getBoundingClientRect();
+  const scrollableRange = rect.height - window.innerHeight;
+  if (scrollableRange <= 0) return;
+
+  let progress = -rect.top / scrollableRange;
+  progress = Math.min(Math.max(progress, 0), 1);
+
+  const activeIndex = Math.min(
+    Math.floor(progress * quoteLines.length),
+    quoteLines.length - 1
+  );
+
+  quoteLines.forEach((line, i) => {
+    line.classList.toggle('active', i === activeIndex);
+  });
+}
+
+window.addEventListener('scroll', updateQuotesPin, { passive: true });
+window.addEventListener('resize', updateQuotesPin);
+updateQuotesPin();
 
 // Fade out the "scroll" hint once the person actually starts scrolling
 const scrollHint = document.querySelector('.scroll-hint');

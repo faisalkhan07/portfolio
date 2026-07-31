@@ -161,36 +161,49 @@ body {
   pointer-events: none;
 }
 
-/* ===== Scroll-reveal quotes (Datacurve-style manifesto) ===== */
-.quotes {
+/* ===== Pinned scroll quotes (Datacurve-style) ===== */
+/* The outer section is tall (--steps × 100vh) so there's scroll distance to consume.
+   The inner .quotes-viewport is `position: sticky; top: 0`, so it stays stuck to the
+   top of the screen for that whole scroll distance — the "screen doesn't move" feel —
+   while JS swaps which line has the .active class based on scroll progress. */
+.quotes-pin {
   position: relative;
-  z-index: 1;
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 20vh 24px 40vh;
+  height: calc(var(--steps, 8) * 100vh);
+}
+
+.quotes-viewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
-  gap: 14vh;
+  align-items: center;
+  justify-content: center;
 }
 
 .quote-line {
-  font-size: clamp(20px, 4vw, 30px);
-  line-height: 1.5;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateY(16px);
+  max-width: 640px;
+  padding: 0 24px;
   text-align: center;
-  color: var(--muted);
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s ease, transform 0.8s ease, color 0.8s ease;
-}
-.quote-line.in-view {
-  opacity: 1;
-  transform: translateY(0);
+  font-size: clamp(20px, 4vw, 32px);
+  line-height: 1.5;
   color: var(--text);
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
 }
-.quote-line em { color: var(--text); font-style: normal; border-bottom: 1px solid currentColor; }
+.quote-line.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) translateY(0);
+}
+.quote-line em { font-style: normal; border-bottom: 1px solid currentColor; }
 
 @media (prefers-reduced-motion: reduce) {
   .mark .blade { transition: none; }
   .scroll-hint { animation: none; }
-  .quote-line { transition: none; opacity: 1; transform: none; color: var(--text); }
+  .quote-line { transition: none; }
 }
