@@ -139,34 +139,49 @@ if (!prefersReducedMotion) {
 }
 
 // ===== Pinned scroll quotes =====
-// Figures out how far we've scrolled through the tall .quotes-pin section,
-// converts that into a step index, and toggles .active on the matching line.
+// Sets the pinned section's height directly from however many .quote-step elements
+// exist (no risk of it getting out of sync with a hardcoded number), then figures out
+// how far we've scrolled through that tall section and toggles .active accordingly.
 const quotesPin = document.getElementById('quotesPin');
-const quoteLines = document.querySelectorAll('.quote-line');
+const quoteSteps = document.querySelectorAll('.quote-step');
+const STEP_VH = 100; // how much scroll distance (in vh) each quote gets
+
+function setPinHeight() {
+  if (!quotesPin || quoteSteps.length === 0) return;
+  quotesPin.style.height = `${quoteSteps.length * STEP_VH}vh`;
+}
 
 function updateQuotesPin() {
-  if (!quotesPin || quoteLines.length === 0) return;
+  if (!quotesPin || quoteSteps.length === 0) return;
 
   const rect = quotesPin.getBoundingClientRect();
   const scrollableRange = rect.height - window.innerHeight;
-  if (scrollableRange <= 0) return;
 
-  let progress = -rect.top / scrollableRange;
+  let progress = scrollableRange > 0 ? -rect.top / scrollableRange : 0;
   progress = Math.min(Math.max(progress, 0), 1);
 
   const activeIndex = Math.min(
-    Math.floor(progress * quoteLines.length),
-    quoteLines.length - 1
+    Math.floor(progress * quoteSteps.length),
+    quoteSteps.length - 1
   );
 
-  quoteLines.forEach((line, i) => {
-    line.classList.toggle('active', i === activeIndex);
+  quoteSteps.forEach((step, i) => {
+    step.classList.toggle('active', i === activeIndex);
   });
 }
 
-window.addEventListener('scroll', updateQuotesPin, { passive: true });
-window.addEventListener('resize', updateQuotesPin);
+setPinHeight();
 updateQuotesPin();
+
+window.addEventListener('scroll', updateQuotesPin, { passive: true });
+window.addEventListener('resize', () => {
+  setPinHeight();
+  updateQuotesPin();
+});
+window.addEventListener('load', () => {
+  setPinHeight();
+  updateQuotesPin();
+});
 
 // Fade out the "scroll" hint once the person actually starts scrolling
 const scrollHint = document.querySelector('.scroll-hint');

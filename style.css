@@ -162,13 +162,13 @@ body {
 }
 
 /* ===== Pinned scroll quotes (Datacurve-style) ===== */
-/* The outer section is tall (--steps × 100vh) so there's scroll distance to consume.
-   The inner .quotes-viewport is `position: sticky; top: 0`, so it stays stuck to the
-   top of the screen for that whole scroll distance — the "screen doesn't move" feel —
-   while JS swaps which line has the .active class based on scroll progress. */
+/* The outer section is tall (steps × 100vh, set by JS) so there's scroll distance
+   to consume. The inner .quotes-viewport is `position: sticky; top: 0`, so it stays
+   stuck to the top of the screen for that whole distance — the "screen doesn't move"
+   feel — while JS swaps which .quote-step has the .active class based on scroll %. */
 .quotes-pin {
   position: relative;
-  height: calc(var(--steps, 8) * 100vh);
+  height: 500vh; /* JS recalculates this precisely on load based on step count */
 }
 
 .quotes-viewport {
@@ -181,29 +181,60 @@ body {
   justify-content: center;
 }
 
-.quote-line {
+.quote-step {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%) translateY(16px);
-  max-width: 640px;
+  max-width: 560px;
   padding: 0 24px;
-  text-align: center;
-  font-size: clamp(20px, 4vw, 32px);
-  line-height: 1.5;
-  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
   opacity: 0;
   transition: opacity 0.5s ease, transform 0.5s ease;
   pointer-events: none;
 }
-.quote-line.active {
+.quote-step.active {
   opacity: 1;
   transform: translate(-50%, -50%) translateY(0);
 }
-.quote-line em { font-style: normal; border-bottom: 1px solid currentColor; }
+.quote-step p {
+  text-align: center;
+  font-size: clamp(18px, 3.6vw, 28px);
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* ===== Pixel-art icons per quote ===== */
+.pixel-art {
+  width: 64px;
+  height: 64px;
+  overflow: visible;
+}
+.pixel-art .blink {
+  animation: pixelBlink 1.4s step-end infinite;
+}
+@keyframes pixelBlink { 50% { opacity: 0.15; } }
+
+/* the aperture icon reused for the computer-vision quote spins gently */
+.aperture-mini .blade {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(var(--angle));
+  animation: apertureSpin 12s linear infinite;
+}
+@keyframes apertureSpin {
+  0%   { transform: rotate(var(--angle)); }
+  50%  { transform: rotate(calc(var(--angle) + 10deg)); }
+  100% { transform: rotate(var(--angle)); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .mark .blade { transition: none; }
   .scroll-hint { animation: none; }
-  .quote-line { transition: none; }
+  .quote-step { transition: none; }
+  .pixel-art .blink { animation: none; }
+  .aperture-mini .blade { animation: none; }
 }
