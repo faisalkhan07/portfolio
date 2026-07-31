@@ -5,32 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Faisal Khan</title>
 <meta name="description" content="Faisal Khan — AI Engineer." />
-<meta name="theme-color" content="#212121" />
+<meta name="theme-color" content="#0a0a0c" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <canvas id="bg"></canvas>
+<div class="scanlines" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
 
-<section class="hero-screen">
-<main class="wrap">
-
+<!-- HERO -->
+<section class="screen hero-screen" id="top">
   <div class="mark" id="mark" aria-hidden="true">
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <path class="blade" style="--angle:0deg"   d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
-      <path class="blade" style="--angle:60deg"  d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
-      <path class="blade" style="--angle:120deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
-      <path class="blade" style="--angle:180deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
-      <path class="blade" style="--angle:240deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
-      <path class="blade" style="--angle:300deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
+      <path class="blade" style="--angle:0deg"   d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
+      <path class="blade" style="--angle:60deg"  d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
+      <path class="blade" style="--angle:120deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
+      <path class="blade" style="--angle:180deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
+      <path class="blade" style="--angle:240deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
+      <path class="blade" style="--angle:300deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
     </svg>
   </div>
 
-  <h1 class="name">Faisal Khan</h1>
-  <p class="tagline">AI Engineer. Got here through gaming, staying for the models.</p>
+  <h1 class="name">FAISAL<br/>KHAN</h1>
+  <p class="tagline">&gt; AI ENGINEER // LEVELED UP FROM GAMING</p>
 
   <nav class="icon-links">
     <a class="icon-badge icon-github" href="https://github.com/faisalkhan07" target="_blank" rel="noopener" aria-label="GitHub">
@@ -50,83 +51,66 @@
     </a>
   </nav>
 
-  <a href="mailto:faisalkh4n07@gmail.com" class="contact-btn">Contact</a>
-
-</main>
-<p class="scroll-hint">scroll</p>
+  <a href="mailto:faisalkh4n07@gmail.com" class="contact-btn">[ CONTACT ]</a>
+  <p class="scroll-hint">▾ scroll ▾</p>
 </section>
 
-<!-- PINNED SCROLL QUOTES: the screen holds still while your scroll steps through these -->
-<section class="quotes-pin" id="quotesPin">
-  <div class="quotes-viewport">
+<!-- QUOTE SCREENS -->
+<section class="screen quote-screen">
+  <svg class="pixel-art" viewBox="0 0 8 8">
+    <rect x="2" y="1" width="4" height="1"/><rect x="2" y="2" width="1" height="1"/>
+    <rect x="5" y="2" width="1" height="1"/><rect x="2" y="3" width="4" height="1"/>
+    <rect x="3" y="4" width="2" height="1"/><rect x="1" y="5" width="6" height="1"/>
+    <rect x="6" y="2" width="1" height="3"/>
+    <rect class="blink" x="3" y="2" width="2" height="1"/>
+  </svg>
+  <p class="quote-text" data-text="Most nights, this used to be a gaming chair, a monitor, and a controller.">Most nights, this used to be a gaming chair, a monitor, and a controller.</p>
+</section>
 
-    <div class="quote-step" data-i="0">
-      <svg class="pixel-art" viewBox="0 0 8 8">
-        <rect x="2" y="1" width="4" height="1" fill="#F4F1E8"/>
-        <rect x="2" y="2" width="1" height="1" fill="#F4F1E8"/>
-        <rect x="5" y="2" width="1" height="1" fill="#F4F1E8"/>
-        <rect x="2" y="3" width="4" height="1" fill="#F4F1E8"/>
-        <rect x="3" y="4" width="2" height="1" fill="#F4F1E8"/>
-        <rect x="1" y="5" width="6" height="1" fill="#F4F1E8"/>
-        <rect x="6" y="2" width="1" height="3" fill="#F4F1E8"/>
-        <rect class="blink" x="3" y="2" width="2" height="1" fill="#F4F1E8"/>
-      </svg>
-      <p>Most nights, this used to be a gaming chair, a monitor, and a controller.</p>
-    </div>
+<section class="screen quote-screen">
+  <svg class="pixel-art" viewBox="0 0 8 8">
+    <rect x="1" y="1" width="1" height="1"/><rect x="2" y="2" width="1" height="1"/>
+    <rect x="3" y="3" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/>
+    <rect x="1" y="5" width="1" height="1"/>
+    <rect class="blink" x="5" y="5" width="2" height="1"/>
+  </svg>
+  <p class="quote-text" data-text="Somewhere between mods and menus, I got curious enough to start writing code.">Somewhere between mods and menus, I got curious enough to start writing code.</p>
+</section>
 
-    <div class="quote-step" data-i="1">
-      <svg class="pixel-art" viewBox="0 0 8 8">
-        <rect x="1" y="1" width="1" height="1" fill="#F4F1E8"/>
-        <rect x="2" y="2" width="1" height="1" fill="#F4F1E8"/>
-        <rect x="3" y="3" width="1" height="1" fill="#F4F1E8"/>
-        <rect x="2" y="4" width="1" height="1" fill="#F4F1E8"/>
-        <rect x="1" y="5" width="1" height="1" fill="#F4F1E8"/>
-        <rect class="blink" x="5" y="5" width="2" height="1" fill="#F4F1E8"/>
-      </svg>
-      <p>Somewhere between mods and menus, I got curious enough to start writing code.</p>
-    </div>
+<section class="screen quote-screen">
+  <svg class="pixel-art aperture-mini" viewBox="0 0 100 100">
+    <path class="blade" style="--angle:0deg"   d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
+    <path class="blade" style="--angle:60deg"  d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
+    <path class="blade" style="--angle:120deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
+    <path class="blade" style="--angle:180deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
+    <path class="blade" style="--angle:240deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
+    <path class="blade" style="--angle:300deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
+  </svg>
+  <p class="quote-text" data-text="That curiosity became a Bachelor's in AI — and my first real projects, teaching machines to see.">That curiosity became a Bachelor's in AI — and my first real projects, teaching machines to see.</p>
+</section>
 
-    <div class="quote-step" data-i="2">
-      <svg class="pixel-art aperture-mini" viewBox="0 0 100 100">
-        <path class="blade" style="--angle:0deg"   d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
-        <path class="blade" style="--angle:60deg"  d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
-        <path class="blade" style="--angle:120deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
-        <path class="blade" style="--angle:180deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
-        <path class="blade" style="--angle:240deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
-        <path class="blade" style="--angle:300deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z" fill="#F4F1E8"/>
-      </svg>
-      <p>That curiosity became a Bachelor's in AI — and my first real projects, teaching machines to see.</p>
-    </div>
+<section class="screen quote-screen">
+  <svg class="pixel-art" viewBox="0 0 8 8">
+    <line x1="1.5" y1="1.5" x2="4" y2="4" stroke-width="0.15"/>
+    <line x1="6.5" y1="1.5" x2="4" y2="4" stroke-width="0.15"/>
+    <line x1="1.5" y1="6.5" x2="4" y2="4" stroke-width="0.15"/>
+    <line x1="6.5" y1="6.5" x2="4" y2="4" stroke-width="0.15"/>
+    <rect x="1" y="1" width="1" height="1"/><rect x="6" y="1" width="1" height="1"/>
+    <rect x="1" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/>
+    <rect class="blink" x="3.5" y="3.5" width="1" height="1"/>
+  </svg>
+  <p class="quote-text" data-text="Now I'm moving into LLMs and applied machine learning. Same curiosity, bigger models.">Now I'm moving into LLMs and applied machine learning. Same curiosity, bigger models.</p>
+</section>
 
-    <div class="quote-step" data-i="3">
-      <svg class="pixel-art" viewBox="0 0 8 8">
-        <line x1="1.5" y1="1.5" x2="4" y2="4" stroke="#F4F1E8" stroke-width="0.15"/>
-        <line x1="6.5" y1="1.5" x2="4" y2="4" stroke="#F4F1E8" stroke-width="0.15"/>
-        <line x1="1.5" y1="6.5" x2="4" y2="4" stroke="#F4F1E8" stroke-width="0.15"/>
-        <line x1="6.5" y1="6.5" x2="4" y2="4" stroke="#F4F1E8" stroke-width="0.15"/>
-        <rect x="1" y="1" width="1" height="1" fill="#F4F1E8"/>
-        <rect x="6" y="1" width="1" height="1" fill="#F4F1E8"/>
-        <rect x="1" y="6" width="1" height="1" fill="#F4F1E8"/>
-        <rect x="6" y="6" width="1" height="1" fill="#F4F1E8"/>
-        <rect class="blink" x="3.5" y="3.5" width="1" height="1" fill="#F4F1E8"/>
-      </svg>
-      <p>Now I'm moving into LLMs and applied machine learning. Same curiosity, bigger models.</p>
-    </div>
-
-    <div class="quote-step" data-i="4">
-      <svg class="pixel-art" viewBox="0 0 8 8">
-        <rect x="3" y="0" width="2" height="1" fill="#F4F1E8"/>
-        <rect x="2" y="1" width="4" height="2" fill="#F4F1E8"/>
-        <rect x="1" y="3" width="1" height="1" fill="#F4F1E8"/>
-        <rect x="6" y="3" width="1" height="1" fill="#F4F1E8"/>
-        <rect x="2" y="3" width="4" height="1" fill="#F4F1E8"/>
-        <rect class="blink" x="3" y="5" width="1" height="1" fill="#F4F1E8"/>
-        <rect class="blink" x="4" y="6" width="1" height="1" fill="#F4F1E8"/>
-      </svg>
-      <p>Twelve projects, one month, currently in progress — this is where I'll post what comes next.</p>
-    </div>
-
-  </div>
+<section class="screen quote-screen">
+  <svg class="pixel-art" viewBox="0 0 8 8">
+    <rect x="3" y="0" width="2" height="1"/><rect x="2" y="1" width="4" height="2"/>
+    <rect x="1" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/>
+    <rect x="2" y="3" width="4" height="1"/>
+    <rect class="blink" x="3" y="5" width="1" height="1"/>
+    <rect class="blink" x="4" y="6" width="1" height="1"/>
+  </svg>
+  <p class="quote-text" data-text="Twelve projects, one month, currently in progress — this is where I'll post what comes next.">Twelve projects, one month, currently in progress — this is where I'll post what comes next.</p>
 </section>
 
 <footer class="flag-footer">

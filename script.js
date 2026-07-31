@@ -1,19 +1,16 @@
-// ===== Interactive background =====
-// Particles drift, form faint connections when close together, swirl more
-// the further you scroll down the page, and get pushed away by your cursor.
-
+// ===== Interactive background (cyan/magenta duotone) =====
 const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
 
 const PARTICLE_COUNT = 90;
 const BASE_SPEED = 0.12;
-const CONNECT_DIST = 130;      // lines appear between particles closer than this
-const MOUSE_RADIUS = 140;      // cursor push-away radius
+const CONNECT_DIST = 130;
+const MOUSE_RADIUS = 140;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let particles = [];
 let docHeight = 1;
-let scrollProgress = 0; // 0 at top of page, 1 at bottom
+let scrollProgress = 0;
 const mouse = { x: -9999, y: -9999 };
 
 function resize() {
@@ -28,7 +25,8 @@ function makeParticles() {
     y: Math.random() * canvas.height,
     vx: (Math.random() - 0.5) * BASE_SPEED,
     vy: (Math.random() - 0.5) * BASE_SPEED,
-    r: Math.random() * 1.4 + 0.5,
+    r: Math.random() * 1.5 + 0.5,
+    color: Math.random() > 0.5 ? '0, 229, 255' : '255, 46, 147', // cyan / magenta mix
   }));
 }
 
@@ -41,19 +39,15 @@ function step() {
 
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
-  // The more you've scrolled, the stronger the swirl around the page's center
   const swirl = scrollProgress * 0.0022;
-  // And the faster particles drift overall
   const speedMult = 1 + scrollProgress * 1.6;
 
   particles.forEach((p) => {
-    // gentle swirl: rotate velocity slightly around the center
     const dx = p.x - cx;
     const dy = p.y - cy;
     p.vx += -dy * swirl;
     p.vy += dx * swirl;
 
-    // cursor push-away
     const mdx = p.x - mouse.x;
     const mdy = p.y - mouse.y;
     const mdist = Math.hypot(mdx, mdy);
@@ -63,10 +57,8 @@ function step() {
       p.vy += (mdy / (mdist || 1)) * force;
     }
 
-    // gentle damping so speed doesn't run away
     p.vx *= 0.98;
     p.vy *= 0.98;
-
     p.x += p.vx * speedMult;
     p.y += p.vy * speedMult;
 
@@ -76,8 +68,7 @@ function step() {
     if (p.y > canvas.height) p.y = 0;
   });
 
-  // constellation lines between nearby particles
-  const lineOpacityBoost = 0.15 + scrollProgress * 0.35;
+  const lineOpacityBoost = 0.12 + scrollProgress * 0.3;
   for (let i = 0; i < particles.length; i++) {
     for (let j = i + 1; j < particles.length; j++) {
       const a = particles[i];
@@ -88,18 +79,17 @@ function step() {
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(244, 241, 232, ${alpha})`;
+        ctx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
     }
   }
 
-  // particles on top of the lines
   particles.forEach((p) => {
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(244, 241, 232, 0.55)';
+    ctx.fillStyle = `rgba(${p.color}, 0.75)`;
     ctx.fill();
   });
 
@@ -128,60 +118,31 @@ window.addEventListener('mouseleave', () => {
 if (!prefersReducedMotion) {
   requestAnimationFrame(step);
 } else {
-  // Draw one static frame instead of animating continuously
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach((p) => {
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(244, 241, 232, 0.4)';
+    ctx.fillStyle = `rgba(${p.color}, 0.5)`;
     ctx.fill();
   });
 }
 
-// ===== Pinned scroll quotes =====
-// Sets the pinned section's height directly from however many .quote-step elements
-// exist (no risk of it getting out of sync with a hardcoded number), then figures out
-// how far we've scrolled through that tall section and toggles .active accordingly.
-const quotesPin = document.getElementById('quotesPin');
-const quoteSteps = document.querySelectorAll('.quote-step');
-const STEP_VH = 100; // how much scroll distance (in vh) each quote gets
+// ===== Quote screen reveals =====
+// Each .quote-screen fades/glitches in once it's mostly on screen, and stays
+// visible after that — no fragile scroll-height math, just IntersectionObserver.
+const screenObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        screenObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.6 }
+);
 
-function setPinHeight() {
-  if (!quotesPin || quoteSteps.length === 0) return;
-  quotesPin.style.height = `${quoteSteps.length * STEP_VH}vh`;
-}
-
-function updateQuotesPin() {
-  if (!quotesPin || quoteSteps.length === 0) return;
-
-  const rect = quotesPin.getBoundingClientRect();
-  const scrollableRange = rect.height - window.innerHeight;
-
-  let progress = scrollableRange > 0 ? -rect.top / scrollableRange : 0;
-  progress = Math.min(Math.max(progress, 0), 1);
-
-  const activeIndex = Math.min(
-    Math.floor(progress * quoteSteps.length),
-    quoteSteps.length - 1
-  );
-
-  quoteSteps.forEach((step, i) => {
-    step.classList.toggle('active', i === activeIndex);
-  });
-}
-
-setPinHeight();
-updateQuotesPin();
-
-window.addEventListener('scroll', updateQuotesPin, { passive: true });
-window.addEventListener('resize', () => {
-  setPinHeight();
-  updateQuotesPin();
-});
-window.addEventListener('load', () => {
-  setPinHeight();
-  updateQuotesPin();
-});
+document.querySelectorAll('.quote-screen').forEach((screen) => screenObserver.observe(screen));
 
 // Fade out the "scroll" hint once the person actually starts scrolling
 const scrollHint = document.querySelector('.scroll-hint');
