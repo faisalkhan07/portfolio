@@ -1,12 +1,10 @@
 // ===== Interactive background =====
 // Particles drift in cyan/magenta, connect into faint lines when close together,
-// swirl more the further you've scrolled through the page, and get pushed away
-// by your cursor. Note: scrolling now happens inside the `.scroller` element
-// (because of scroll-snap), not the window — so progress is measured from that.
+// swirl more and move faster the further you scroll down the whole page, and
+// get pushed away by your cursor.
 
 const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
-const scroller = document.querySelector('.scroller');
 
 const PARTICLE_COUNT = 90;
 const BASE_SPEED = 0.12;
@@ -15,12 +13,14 @@ const MOUSE_RADIUS = 140;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let particles = [];
-let scrollProgress = 0; // 0 at top, 1 at bottom of the .scroller
+let docHeight = 1;
+let scrollProgress = 0; // 0 at top of page, 1 at bottom
 const mouse = { x: -9999, y: -9999 };
 
 function resize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  docHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
 }
 
 function makeParticles() {
@@ -35,9 +35,7 @@ function makeParticles() {
 }
 
 function updateScrollProgress() {
-  if (!scroller) return;
-  const range = scroller.scrollHeight - scroller.clientHeight;
-  scrollProgress = range > 0 ? Math.min(scroller.scrollTop / range, 1) : 0;
+  scrollProgress = Math.min(window.scrollY / docHeight, 1);
 }
 
 const COLORS = {
@@ -116,7 +114,7 @@ window.addEventListener('resize', () => {
   makeParticles();
   updateScrollProgress();
 });
-if (scroller) scroller.addEventListener('scroll', updateScrollProgress, { passive: true });
+window.addEventListener('scroll', updateScrollProgress, { passive: true });
 window.addEventListener('mousemove', (e) => {
   mouse.x = e.clientX;
   mouse.y = e.clientY;
@@ -138,9 +136,35 @@ if (!prefersReducedMotion) {
   });
 }
 
+// ===== Parallax on each quote screen =====
+// The icon and the text inside each [data-parallax] section move at
+// different speeds as that section crosses the viewport, giving a sense
+// of depth as you scroll normally (no snapping, no scroll-hijacking).
+const parallaxSections = document.querySelectorAll('[data-parallax]');
+
+function updateParallax() {
+  const viewportH = window.innerHeight;
+
+  parallaxSections.forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    // progress: -1 when section is just below the viewport, 0 when centered, 1 when just above
+    const center = rect.top + rect.height / 2;
+    const progress = (viewportH / 2 - center) / viewportH;
+
+    const icon = section.querySelector('.parallax-icon');
+    const text = section.querySelector('.parallax-text');
+    if (icon) icon.style.transform = `translateY(${progress * -60}px)`;
+    if (text) text.style.transform = `translateY(${progress * -24}px)`;
+  });
+}
+
+window.addEventListener('scroll', updateParallax, { passive: true });
+window.addEventListener('resize', updateParallax);
+updateParallax();
+
 // ===== Glitch-in text reveal =====
 // Each .glitch-text plays its glitch-in animation once, the first time it's
-// mostly visible, and then stays visible. Simple, reliable, no scroll-math.
+// mostly visible, and then stays visible.
 const glitchObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -150,18 +174,18 @@ const glitchObserver = new IntersectionObserver(
       }
     });
   },
-  { root: scroller, threshold: 0.6 }
+  { threshold: 0.6 }
 );
 
 document.querySelectorAll('.glitch-text').forEach((el) => glitchObserver.observe(el));
 
 // Fade out the "scroll" hint once scrolling actually starts
 const scrollHint = document.querySelector('.scroll-hint');
-if (scrollHint && scroller) {
-  scroller.addEventListener(
+if (scrollHint) {
+  window.addEventListener(
     'scroll',
     () => {
-      scrollHint.style.opacity = scroller.scrollTop > 40 ? '0' : '';
+      scrollHint.style.opacity = window.scrollY > 40 ? '0' : '';
       scrollHint.style.transition = 'opacity 0.4s ease';
     },
     { passive: true }

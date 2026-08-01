@@ -16,10 +16,10 @@
 <canvas id="bg"></canvas>
 <div class="crt-overlay" aria-hidden="true"></div>
 
-<main class="scroller">
+<main>
 
   <!-- HERO -->
-  <section class="snap-section hero-screen">
+  <section class="page-section hero-screen">
     <div class="wrap">
       <div class="mark" id="mark" aria-hidden="true">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -58,37 +58,30 @@
     <p class="scroll-hint">scroll ▾</p>
   </section>
 
-  <!-- QUOTE 1 -->
-  <section class="snap-section quote-screen">
-    <svg class="pixel-art" viewBox="0 0 8 8">
-      <rect class="c" x="2" y="1" width="4" height="1"/>
-      <rect class="c" x="2" y="2" width="1" height="1"/>
-      <rect class="c" x="5" y="2" width="1" height="1"/>
-      <rect class="c" x="2" y="3" width="4" height="1"/>
-      <rect class="c" x="3" y="4" width="2" height="1"/>
-      <rect class="c" x="1" y="5" width="6" height="1"/>
-      <rect class="c" x="6" y="2" width="1" height="3"/>
-      <rect class="m blink" x="3" y="2" width="2" height="1"/>
+  <!-- QUOTE 1 — controller -->
+  <section class="page-section quote-screen" data-parallax>
+    <svg class="pixel-art parallax-icon" viewBox="0 0 8 8">
+      <rect class="c" x="1" y="3" width="6" height="2"/>
+      <rect class="c" x="0.5" y="3.5" width="1" height="1"/>
+      <rect class="c" x="6.5" y="3.5" width="1" height="1"/>
+      <rect class="m blink" x="2" y="3.5" width="1" height="1"/>
+      <rect class="m blink" x="5" y="3.5" width="1" height="1"/>
     </svg>
-    <p class="glitch-text">Most nights, this used to be a gaming chair, a monitor, and a controller.</p>
+    <p class="glitch-text parallax-text">Most nights, this used to be a gaming chair, a monitor, and a controller.</p>
   </section>
 
-  <!-- QUOTE 2 -->
-  <section class="snap-section quote-screen">
-    <svg class="pixel-art" viewBox="0 0 8 8">
-      <rect class="c" x="1" y="1" width="1" height="1"/>
-      <rect class="c" x="2" y="2" width="1" height="1"/>
-      <rect class="c" x="3" y="3" width="1" height="1"/>
-      <rect class="c" x="2" y="4" width="1" height="1"/>
-      <rect class="c" x="1" y="5" width="1" height="1"/>
-      <rect class="m blink" x="5" y="5" width="2" height="1"/>
+  <!-- QUOTE 2 — muncher -->
+  <section class="page-section quote-screen" data-parallax>
+    <svg class="pixel-art muncher parallax-icon" viewBox="0 0 8 8">
+      <circle class="c" cx="4" cy="4" r="3.2"/>
+      <polygon class="mouth" points="4,4 8,2.3 8,5.7"/>
     </svg>
-    <p class="glitch-text">Somewhere between mods and menus, I got curious enough to start writing code.</p>
+    <p class="glitch-text parallax-text">Somewhere between mods and menus, I got curious enough to start writing code.</p>
   </section>
 
-  <!-- QUOTE 3 -->
-  <section class="snap-section quote-screen">
-    <svg class="pixel-art aperture-mini" viewBox="0 0 100 100">
+  <!-- QUOTE 3 — aperture (your mark) -->
+  <section class="page-section quote-screen" data-parallax>
+    <svg class="pixel-art aperture-mini parallax-icon" viewBox="0 0 100 100">
       <path class="blade c" style="--angle:0deg"   d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
       <path class="blade m" style="--angle:60deg"  d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
       <path class="blade c" style="--angle:120deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
@@ -96,43 +89,36 @@
       <path class="blade c" style="--angle:240deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
       <path class="blade m" style="--angle:300deg" d="M50,50 L50,10 A40,40 0 0,1 84,30 Z"/>
     </svg>
-    <p class="glitch-text">That curiosity became a Bachelor's in AI — and my first real projects, teaching machines to see.</p>
+    <p class="glitch-text parallax-text">That curiosity became a Bachelor's in AI — and my first real projects, teaching machines to see.</p>
   </section>
 
-  <!-- QUOTE 4 -->
-  <section class="snap-section quote-screen">
-    <svg class="pixel-art" viewBox="0 0 8 8">
-      <line class="c" x1="1.5" y1="1.5" x2="4" y2="4" stroke-width="0.15"/>
-      <line class="c" x1="6.5" y1="1.5" x2="4" y2="4" stroke-width="0.15"/>
-      <line class="c" x1="1.5" y1="6.5" x2="4" y2="4" stroke-width="0.15"/>
-      <line class="c" x1="6.5" y1="6.5" x2="4" y2="4" stroke-width="0.15"/>
-      <rect class="c" x="1" y="1" width="1" height="1"/>
-      <rect class="c" x="6" y="1" width="1" height="1"/>
-      <rect class="c" x="1" y="6" width="1" height="1"/>
-      <rect class="c" x="6" y="6" width="1" height="1"/>
-      <rect class="m blink" x="3.5" y="3.5" width="1" height="1"/>
+  <!-- QUOTE 4 — spinning coin -->
+  <section class="page-section quote-screen" data-parallax>
+    <svg class="pixel-art parallax-icon" viewBox="0 0 8 8">
+      <circle class="c coin-shape" cx="4" cy="4" r="3"/>
+      <rect class="m blink" x="3.5" y="2.3" width="1" height="3.4"/>
     </svg>
-    <p class="glitch-text">Now I'm moving into LLMs and applied machine learning. Same curiosity, bigger models.</p>
+    <p class="glitch-text parallax-text">Now I'm moving into LLMs and applied machine learning. Same curiosity, bigger models.</p>
   </section>
 
-  <!-- QUOTE 5 -->
-  <section class="snap-section quote-screen">
-    <svg class="pixel-art" viewBox="0 0 8 8">
-      <rect class="c" x="3" y="0" width="2" height="1"/>
-      <rect class="c" x="2" y="1" width="4" height="2"/>
-      <rect class="c" x="1" y="3" width="1" height="1"/>
-      <rect class="c" x="6" y="3" width="1" height="1"/>
-      <rect class="c" x="2" y="3" width="4" height="1"/>
-      <rect class="m blink" x="3" y="5" width="1" height="1"/>
-      <rect class="m blink" x="4" y="6" width="1" height="1"/>
+  <!-- QUOTE 5 — pixel heart -->
+  <section class="page-section quote-screen" data-parallax>
+    <svg class="pixel-art parallax-icon" viewBox="0 0 7 7">
+      <rect class="c" x="1" y="0" width="2" height="1"/>
+      <rect class="c" x="4" y="0" width="2" height="1"/>
+      <rect class="c" x="0" y="1" width="7" height="1"/>
+      <rect class="c" x="0" y="2" width="7" height="1"/>
+      <rect class="m blink" x="1" y="3" width="5" height="1"/>
+      <rect class="c" x="2" y="4" width="3" height="1"/>
+      <rect class="c" x="3" y="5" width="1" height="1"/>
     </svg>
-    <p class="glitch-text">Twelve projects, one month, currently in progress — this is where I'll post what comes next.</p>
+    <p class="glitch-text parallax-text">Twelve projects, one month, currently in progress — this is where I'll post what comes next.</p>
   </section>
 
 </main>
 
 <footer class="flag-footer">
-  <span>🇵🇰</span>
+  <img src="flag.svg" alt="Pakistan flag" class="flag-img" />
 </footer>
 
 <script src="script.js"></script>
