@@ -1,6 +1,12 @@
-// ===== Interactive background (cyan/magenta duotone) =====
+// ===== Interactive background =====
+// Particles drift in cyan/magenta, connect into faint lines when close together,
+// swirl more the further you've scrolled through the page, and get pushed away
+// by your cursor. Note: scrolling now happens inside the `.scroller` element
+// (because of scroll-snap), not the window — so progress is measured from that.
+
 const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
+const scroller = document.querySelector('.scroller');
 
 const PARTICLE_COUNT = 90;
 const BASE_SPEED = 0.12;
@@ -9,14 +15,12 @@ const MOUSE_RADIUS = 140;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let particles = [];
-let docHeight = 1;
-let scrollProgress = 0;
+let scrollProgress = 0; // 0 at top, 1 at bottom of the .scroller
 const mouse = { x: -9999, y: -9999 };
 
 function resize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  docHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
 }
 
 function makeParticles() {
@@ -25,14 +29,21 @@ function makeParticles() {
     y: Math.random() * canvas.height,
     vx: (Math.random() - 0.5) * BASE_SPEED,
     vy: (Math.random() - 0.5) * BASE_SPEED,
-    r: Math.random() * 1.5 + 0.5,
-    color: Math.random() > 0.5 ? '0, 229, 255' : '255, 46, 147', // cyan / magenta mix
+    r: Math.random() * 1.4 + 0.5,
+    hue: Math.random() < 0.5 ? 'cyan' : 'magenta',
   }));
 }
 
 function updateScrollProgress() {
-  scrollProgress = Math.min(window.scrollY / docHeight, 1);
+  if (!scroller) return;
+  const range = scroller.scrollHeight - scroller.clientHeight;
+  scrollProgress = range > 0 ? Math.min(scroller.scrollTop / range, 1) : 0;
 }
+
+const COLORS = {
+  cyan: (a) => `rgba(0, 229, 255, ${a})`,
+  magenta: (a) => `rgba(255, 46, 147, ${a})`,
+};
 
 function step() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -79,7 +90,7 @@ function step() {
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
+        ctx.strokeStyle = COLORS[a.hue](alpha);
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -89,7 +100,7 @@ function step() {
   particles.forEach((p) => {
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(${p.color}, 0.75)`;
+    ctx.fillStyle = COLORS[p.hue](0.65);
     ctx.fill();
   });
 
@@ -105,7 +116,7 @@ window.addEventListener('resize', () => {
   makeParticles();
   updateScrollProgress();
 });
-window.addEventListener('scroll', updateScrollProgress, { passive: true });
+if (scroller) scroller.addEventListener('scroll', updateScrollProgress, { passive: true });
 window.addEventListener('mousemove', (e) => {
   mouse.x = e.clientX;
   mouse.y = e.clientY;
@@ -122,35 +133,35 @@ if (!prefersReducedMotion) {
   particles.forEach((p) => {
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(${p.color}, 0.5)`;
+    ctx.fillStyle = COLORS[p.hue](0.5);
     ctx.fill();
   });
 }
 
-// ===== Quote screen reveals =====
-// Each .quote-screen fades/glitches in once it's mostly on screen, and stays
-// visible after that — no fragile scroll-height math, just IntersectionObserver.
-const screenObserver = new IntersectionObserver(
+// ===== Glitch-in text reveal =====
+// Each .glitch-text plays its glitch-in animation once, the first time it's
+// mostly visible, and then stays visible. Simple, reliable, no scroll-math.
+const glitchObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        screenObserver.unobserve(entry.target);
+        entry.target.classList.add('active');
+        glitchObserver.unobserve(entry.target);
       }
     });
   },
-  { threshold: 0.6 }
+  { root: scroller, threshold: 0.6 }
 );
 
-document.querySelectorAll('.quote-screen').forEach((screen) => screenObserver.observe(screen));
+document.querySelectorAll('.glitch-text').forEach((el) => glitchObserver.observe(el));
 
-// Fade out the "scroll" hint once the person actually starts scrolling
+// Fade out the "scroll" hint once scrolling actually starts
 const scrollHint = document.querySelector('.scroll-hint');
-if (scrollHint) {
-  window.addEventListener(
+if (scrollHint && scroller) {
+  scroller.addEventListener(
     'scroll',
     () => {
-      scrollHint.style.opacity = window.scrollY > 40 ? '0' : '';
+      scrollHint.style.opacity = scroller.scrollTop > 40 ? '0' : '';
       scrollHint.style.transition = 'opacity 0.4s ease';
     },
     { passive: true }
