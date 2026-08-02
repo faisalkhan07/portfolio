@@ -136,6 +136,25 @@ if (!prefersReducedMotion) {
   });
 }
 
+// ===== Word-by-word intro reveal =====
+// Each .rw (word) and .re (emoji) brightens in once it crosses a line partway
+// down the screen, and dims back out if you scroll back up past it — same
+// "your scroll position directly controls it" feel as the reference site.
+const revealEls = document.querySelectorAll('.rw, .re');
+const REVEAL_LINE = 0.62; // 62% down the viewport
+
+function updateReveal() {
+  const triggerY = window.innerHeight * REVEAL_LINE;
+  revealEls.forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    el.classList.toggle('lit', rect.top < triggerY);
+  });
+}
+
+window.addEventListener('scroll', updateReveal, { passive: true });
+window.addEventListener('resize', updateReveal);
+updateReveal();
+
 // ===== Parallax on each quote screen =====
 // The icon and the text inside each [data-parallax] section move at
 // different speeds as that section crosses the viewport, giving a sense

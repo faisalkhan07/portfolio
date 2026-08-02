@@ -83,19 +83,50 @@ main { position: relative; z-index: 1; }
 .mark:hover .blade { transform: rotate(calc(var(--angle) + 16deg)); }
 
 .name {
-  font-family: var(--font-pixel);
-  font-size: clamp(16px, 4.5vw, 24px);
-  line-height: 1.6;
-  letter-spacing: 0.02em;
-  text-shadow: 2px 2px 0 var(--magenta), -2px -2px 0 var(--cyan);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(40px, 11vw, 88px);
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .tagline {
-  margin-top: 20px;
-  font-size: 14px;
-  color: var(--muted);
-  line-height: 1.6;
+  margin-top: 16px;
+  font-size: 15px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cyan);
 }
+
+/* ===== Intro reveal (Rocket-Web-Labs style word-by-word) ===== */
+.intro-reveal {
+  padding: 10vh 24px;
+  min-height: auto;
+}
+.reveal-para {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(22px, 4.2vw, 42px);
+  line-height: 1.5;
+}
+.rw {
+  display: inline-block;
+  color: var(--muted);
+  opacity: 0.3;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+.rw.lit { color: var(--text); opacity: 1; }
+
+.re {
+  display: inline-block;
+  opacity: 0.25;
+  transform: scale(0.6);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.re.lit { opacity: 1; transform: scale(1); }
 
 .icon-links {
   margin-top: 40px;
