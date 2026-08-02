@@ -31,6 +31,29 @@ html, body {
   background: rgba(0, 0, 0, 0.55);
 }
 
+/* ===== Cursor sample: a small canvas that follows the cursor and shows a
+   zoomed-in crop of the video pixels directly underneath it ===== */
+.cursor-sample {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 90px;
+  height: 90px;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  transition: opacity 0.2s ease;
+}
+.cursor-sample.active { opacity: 1; }
+
+@media (hover: none) {
+  /* touch devices have no real cursor to sample under, so skip it entirely */
+  .cursor-sample { display: none; }
+}
+
 /* ===== Content ===== */
 .wrap {
   position: relative;
