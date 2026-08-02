@@ -1,133 +1,64 @@
 :root {
-  --bg: #0a0a0c;
-  --cyan: #00E5FF;
-  --magenta: #FF2E93;
   --text: #F4F1E8;
-  --muted: #8f95a3;
-  --font-pixel: 'Press Start 2P', monospace;
+  --muted: #B8B8B8;
   --font-body: 'Space Grotesk', system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
-  background: var(--bg);
+  height: 100%;
+  background: #111111;
   color: var(--text);
   font-family: var(--font-body);
   overflow-x: hidden;
 }
 
-/* Normal document scroll — no scroll-snap this time, so the parallax
-   translate values (set by JS as you scroll) can move smoothly instead of
-   being interrupted by snapping. */
-.page-section {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  padding: 24px;
-}
-
-/* ===== Background layers ===== */
-#bg {
+/* ===== Background video ===== */
+.bg-video {
   position: fixed;
   inset: 0;
   z-index: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
-.crt-overlay {
+.video-overlay {
   position: fixed;
   inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* ===== Content ===== */
+.wrap {
+  position: relative;
   z-index: 2;
-  pointer-events: none;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.025) 0px,
-      rgba(255,255,255,0.025) 1px,
-      transparent 1px,
-      transparent 3px
-    ),
-    radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%);
-}
-
-main { position: relative; z-index: 1; }
-
-/* ===== Hero ===== */
-.hero-screen .wrap {
-  width: 100%;
-  max-width: 400px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  padding: 24px;
 }
-
-.mark {
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 32px;
-  cursor: pointer;
-}
-.mark svg { width: 100%; height: 100%; overflow: visible; }
-.mark .blade {
-  transform-box: fill-box;
-  transform-origin: center;
-  transform: rotate(var(--angle));
-  transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
-  opacity: 0.95;
-}
-.mark .blade.c { fill: var(--cyan); }
-.mark .blade.m { fill: var(--magenta); }
-.mark:hover .blade { transform: rotate(calc(var(--angle) + 16deg)); }
 
 .name {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: clamp(40px, 11vw, 88px);
-  line-height: 1;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  font-size: clamp(30px, 6vw, 46px);
+  letter-spacing: -0.01em;
 }
 
 .tagline {
-  margin-top: 16px;
+  margin-top: 14px;
   font-size: 15px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--cyan);
-}
-
-/* ===== Intro reveal (Rocket-Web-Labs style word-by-word) ===== */
-.intro-reveal {
-  padding: 10vh 24px;
-  min-height: auto;
-}
-.reveal-para {
-  max-width: 900px;
-  margin: 0 auto;
-  text-align: center;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: clamp(22px, 4.2vw, 42px);
-  line-height: 1.5;
-}
-.rw {
-  display: inline-block;
   color: var(--muted);
-  opacity: 0.3;
-  transition: color 0.3s ease, opacity 0.3s ease;
+  max-width: 420px;
+  line-height: 1.6;
 }
-.rw.lit { color: var(--text); opacity: 1; }
 
-.re {
-  display: inline-block;
-  opacity: 0.25;
-  transform: scale(0.6);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-.re.lit { opacity: 1; transform: scale(1); }
-
+/* ===== Icon links ===== */
 .icon-links {
   margin-top: 40px;
   display: flex;
@@ -135,123 +66,35 @@ main { position: relative; z-index: 1; }
   gap: 26px;
 }
 .icon-links a {
-  opacity: 0.85;
-  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
   color: var(--text);
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.icon-links a:hover { opacity: 1; transform: translateY(-3px); }
-.icon-links svg { width: 24px; height: 24px; fill: currentColor; display: block; }
+.icon-links a:hover {
+  opacity: 1;
+  transform: translateY(-3px);
+}
+.icon-links svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  display: block;
+}
 
-.icon-github:hover   { color: var(--cyan); }
-.icon-linkedin:hover { color: #0A66C2; }
-.icon-x:hover         { color: var(--cyan); }
-.icon-steam:hover     { color: var(--magenta); }
-.icon-email:hover     { color: var(--magenta); }
-
+/* ===== Contact button ===== */
 .contact-btn {
   display: inline-block;
-  margin-top: 48px;
-  background: var(--cyan);
-  color: var(--bg);
+  margin-top: 40px;
+  background: var(--text);
+  color: #111111;
   font-weight: 600;
   font-size: 14px;
   text-decoration: none;
   padding: 12px 32px;
   border-radius: 999px;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
-.contact-btn:hover { transform: translateY(-2px); background: var(--magenta); }
-
-.scroll-hint {
-  position: absolute;
-  bottom: 32px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  animation: bounce 2s ease-in-out infinite;
-}
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); opacity: 0.5; }
-  50% { transform: translateY(6px); opacity: 1; }
-}
-
-/* ===== Quote screens ===== */
-.quote-screen { gap: 32px; }
-
-/* Parallax: JS sets these transforms directly (no CSS transition — parallax
-   needs to track scroll 1:1, a transition would make it lag behind). */
-.parallax-icon, .parallax-text { will-change: transform; }
-
-.pixel-art {
-  width: 72px;
-  height: 72px;
-  overflow: visible;
-}
-.pixel-art .c { fill: var(--cyan); }
-.pixel-art .m { fill: var(--magenta); }
-.pixel-art .blink { animation: pixelBlink 1.3s step-end infinite; }
-@keyframes pixelBlink { 50% { opacity: 0.2; } }
-
-/* Muncher: a wedge cut from the circle chomps open and shut */
-.muncher .mouth {
-  fill: var(--bg);
-  transform-box: fill-box;
-  transform-origin: 0% 50%;
-  animation: chomp 0.5s steps(2, end) infinite;
-}
-@keyframes chomp {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(14deg) scaleY(0.5); }
-}
-
-/* Coin: squashes horizontally on a loop to fake a spin */
-.coin-shape {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: coinSpin 1.1s linear infinite;
-}
-@keyframes coinSpin {
-  0%   { transform: scaleX(1); }
-  50%  { transform: scaleX(0.15); }
-  100% { transform: scaleX(1); }
-}
-
-.aperture-mini .blade.c { fill: var(--cyan); }
-.aperture-mini .blade.m { fill: var(--magenta); }
-.aperture-mini .blade {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: apertureSpin 10s linear infinite;
-}
-@keyframes apertureSpin {
-  0%   { transform: rotate(var(--angle)); }
-  50%  { transform: rotate(calc(var(--angle) + 12deg)); }
-  100% { transform: rotate(var(--angle)); }
-}
-
-.glitch-text {
-  max-width: 600px;
-  text-align: center;
-  font-size: clamp(18px, 3.6vw, 28px);
-  line-height: 1.6;
-  color: var(--text);
-  opacity: 0;
-}
-.glitch-text.active {
-  animation: glitchIn 0.6s steps(1, end) forwards;
-}
-@keyframes glitchIn {
-  0%   { opacity: 0; text-shadow: none; }
-  15%  { opacity: 1; text-shadow: 2px 0 var(--cyan), -2px 0 var(--magenta); }
-  30%  { text-shadow: -2px 0 var(--cyan), 2px 0 var(--magenta); }
-  45%  { text-shadow: 1px 0 var(--cyan), -1px 0 var(--magenta); }
-  65%  { text-shadow: -1px 0 var(--cyan), 1px 0 var(--magenta); }
-  100% { opacity: 1; text-shadow: none; }
-}
+.contact-btn:hover { transform: translateY(-2px); opacity: 0.85; }
 
 /* ===== Flag ===== */
 .flag-footer {
@@ -265,18 +108,7 @@ main { position: relative; z-index: 1; }
   pointer-events: none;
 }
 .flag-img {
-  width: 26px;
+  width: 24px;
   height: auto;
   display: block;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mark .blade { transition: none; }
-  .scroll-hint { animation: none; }
-  .pixel-art .blink { animation: none; }
-  .aperture-mini .blade { animation: none; }
-  .muncher .mouth { animation: none; }
-  .coin-shape { animation: none; }
-  .glitch-text { animation: none !important; opacity: 1; text-shadow: none; }
-  .parallax-icon, .parallax-text { transform: none !important; }
 }
