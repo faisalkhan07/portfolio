@@ -1,6 +1,8 @@
 :root {
   --text: #F4F1E8;
   --muted: #B8B8B8;
+  --red: #FF1E1E;
+  --font-display: 'Anton', sans-serif;
   --font-body: 'Space Grotesk', system-ui, sans-serif;
 }
 
@@ -77,17 +79,25 @@ html, body {
 }
 
 .name {
-  font-weight: 600;
-  font-size: clamp(30px, 6vw, 46px);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(56px, 13vw, 130px);
+  line-height: 0.9;
   letter-spacing: -0.01em;
+  color: var(--red);
+  text-transform: uppercase;
 }
 
 .tagline {
-  margin-top: 14px;
-  font-size: 15px;
-  color: var(--muted);
-  max-width: 420px;
-  line-height: 1.6;
+  margin-top: 22px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text);
+  max-width: 460px;
+  line-height: 1.7;
 }
 
 /* ===== Icon links ===== */
@@ -100,10 +110,11 @@ html, body {
 .icon-links a {
   color: var(--text);
   opacity: 0.8;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
 }
 .icon-links a:hover {
   opacity: 1;
+  color: var(--red);
   transform: translateY(-3px);
 }
 .icon-links svg {
@@ -126,7 +137,7 @@ html, body {
   border-radius: 999px;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
-.contact-btn:hover { transform: translateY(-2px); opacity: 0.85; }
+.contact-btn:hover { transform: translateY(-2px); background: var(--red); color: var(--text); opacity: 1; }
 
 /* ===== Flag ===== */
 .flag-footer {
