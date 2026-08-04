@@ -1,3 +1,48 @@
+// ===== Ambient background blobs =====
+// A handful of large, softly-colored circles drifting slowly behind
+// everything (blurred via CSS on the canvas itself, so the shapes here can
+// stay simple — the blur is what turns them into soft glowing blobs).
+const bgCanvas = document.getElementById('bgCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function resizeBgCanvas() {
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+}
+resizeBgCanvas();
+window.addEventListener('resize', resizeBgCanvas);
+
+const BLOB_COLORS = ['rgba(255,30,30,0.35)', 'rgba(20,20,20,0.12)', 'rgba(255,30,30,0.2)'];
+
+const blobs = Array.from({ length: 6 }, (_, i) => ({
+  baseX: Math.random(),
+  baseY: Math.random(),
+  radius: 140 + Math.random() * 160,
+  speed: 0.00015 + Math.random() * 0.0002,
+  offset: Math.random() * Math.PI * 2,
+  color: BLOB_COLORS[i % BLOB_COLORS.length],
+}));
+
+function drawBlobs(time) {
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+  blobs.forEach((b) => {
+    const x = b.baseX * bgCanvas.width + Math.sin(time * b.speed + b.offset) * 120;
+    const y = b.baseY * bgCanvas.height + Math.cos(time * b.speed * 0.8 + b.offset) * 120;
+
+    bgCtx.beginPath();
+    bgCtx.arc(x, y, b.radius, 0, Math.PI * 2);
+    bgCtx.fillStyle = b.color;
+    bgCtx.fill();
+  });
+
+  if (!prefersReducedMotion) requestAnimationFrame(drawBlobs);
+}
+
+requestAnimationFrame(drawBlobs);
+if (prefersReducedMotion) drawBlobs(0); // draw a single static frame instead
+
 // ===== Rotating quote (changes every 12 hours) =====
 // Add, remove, or edit quotes freely — the rotation logic doesn't need
 // changes when you do. Every visitor within the same 12-hour window sees
