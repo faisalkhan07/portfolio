@@ -70,6 +70,10 @@ html, body {
   justify-content: center;
   text-align: center;
   padding: 24px;
+  pointer-events: none; /* let mouse events pass through the empty space to the video below */
+}
+.wrap > * {
+  pointer-events: auto; /* ...but keep the actual text/links/button interactive */
 }
 
 .name {
