@@ -5,18 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Faisal Khan</title>
 <meta name="description" content="Faisal Khan — AI Engineer." />
-<meta name="theme-color" content="#111111" />
+<meta name="theme-color" content="#EAF0E6" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-<video class="bg-video" id="bgVideo" autoplay muted loop playsinline>
-  <source src="assets/webfront.mp4" type="video/mp4" />
-</video>
-<div class="video-overlay"></div>
 
 <main class="wrap">
   <h1 class="name">Faisal Khan</h1>
@@ -40,7 +35,19 @@
     </a>
   </nav>
 
-  <a href="mailto:faisalkh4n07@gmail.com" class="contact-btn">Contact</a>
+  <!-- ROTATING QUOTE: swaps every 12 hours, same quote for every visitor in
+       that window. Edit the QUOTES array in script.js to add/replace lines. -->
+  <section class="quote-block">
+    <p class="quote-text" id="quoteText">—</p>
+    <p class="quote-author" id="quoteAuthor"></p>
+    <p class="quote-timer">Next quote in <span id="quoteTimer" class="timer-value">—</span></p>
+  </section>
+
+  <!-- VISITOR COUNT -->
+  <div class="visitor-count">
+    <svg viewBox="0 0 24 24" class="eye-icon"><path d="M12 5c-5.05 0-9.27 3.11-11 7.5 1.73 4.39 5.95 7.5 11 7.5s9.27-3.11 11-7.5C21.27 8.11 17.05 5 12 5zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+    <span id="visitorCount">—</span>
+  </div>
 </main>
 
 <footer class="flag-footer">

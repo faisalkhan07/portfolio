@@ -1,88 +1,62 @@
-// This page is intentionally simple — most of the layout needs no JS at all.
-// The one interactive piece is the pixel-stamp trail below.
+// ===== Rotating quote (changes every 12 hours) =====
+// Add, remove, or edit quotes freely — the rotation logic doesn't need
+// changes when you do. Every visitor within the same 12-hour window sees
+// the same quote, and it's fully static — no backend needed.
+const QUOTES = [
+  { text: 'Fall seven times, stand up eight.', author: 'Japanese Proverb' },
+  { text: 'The only way to do great work is to love what you do.', author: 'Steve Jobs' },
+  { text: 'Code is like humor. When you have to explain it, it\u2019s bad.', author: 'Cory House' },
+  { text: 'Simplicity is the soul of efficiency.', author: 'Austin Freeman' },
+  { text: 'The best way to predict the future is to invent it.', author: 'Alan Kay' },
+  { text: 'Whether you think you can, or you think you can\u2019t \u2014 you\u2019re right.', author: 'Henry Ford' },
+  { text: 'Curiosity is the engine of achievement.', author: 'Ken Robinson' },
+  { text: 'First, solve the problem. Then, write the code.', author: 'John Johnson' },
+];
 
-// ===== Pixel stamps =====
-// As you move the mouse over the background video, every time you've moved
-// far enough from the last spot, a small canvas is stamped down showing a
-// zoomed-in crop of the video at that exact point, then fades out and
-// removes itself. It's suppressed entirely while hovering the bio/contact
-// content (the .wrap block), so it only ever appears over open video.
-const bgVideo = document.getElementById('bgVideo');
+const ROTATION_MS = 12 * 60 * 60 * 1000; // 12 hours
 
-const SAMPLE_SOURCE_SIZE = 60; // how many video pixels wide/tall to sample (smaller = more zoomed in)
-const MIN_SPAWN_DISTANCE = 55; // px the cursor must move before a new stamp appears
-const STAMP_LIFETIME_MS = 700;
-
-let lastSpawn = { x: -9999, y: -9999 };
-
-function sampleVideoAt(clientX, clientY, canvas) {
-  const ctx = canvas.getContext('2d');
-  const rect = bgVideo.getBoundingClientRect();
-  const vw = bgVideo.videoWidth;
-  const vh = bgVideo.videoHeight;
-  if (!vw || !vh) return false;
-
-  const videoAspect = vw / vh;
-  const containerAspect = rect.width / rect.height;
-
-  // object-fit: cover scales+crops the video to fill its box — work out
-  // that "true" rendered size so the cursor's screen position maps to the
-  // right pixel coordinate inside the actual video frame.
-  let renderW, renderH;
-  if (videoAspect > containerAspect) {
-    renderH = rect.height;
-    renderW = renderH * videoAspect;
-  } else {
-    renderW = rect.width;
-    renderH = renderW / videoAspect;
-  }
-  const offsetX = (renderW - rect.width) / 2;
-  const offsetY = (renderH - rect.height) / 2;
-
-  const localX = clientX - rect.left + offsetX;
-  const localY = clientY - rect.top + offsetY;
-  const scale = vw / renderW;
-
-  const sx = localX * scale - SAMPLE_SOURCE_SIZE / 2;
-  const sy = localY * scale - SAMPLE_SOURCE_SIZE / 2;
-
-  ctx.drawImage(
-    bgVideo,
-    sx, sy, SAMPLE_SOURCE_SIZE, SAMPLE_SOURCE_SIZE,
-    0, 0, canvas.width, canvas.height
-  );
-  return true;
+function getCurrentWindowIndex() {
+  return Math.floor(Date.now() / ROTATION_MS);
 }
 
-function spawnStamp(x, y) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 180;
-  canvas.height = 180;
-  canvas.className = 'pixel-stamp';
-  canvas.style.left = `${x}px`;
-  canvas.style.top = `${y}px`;
+function renderQuote() {
+  const windowIndex = getCurrentWindowIndex();
+  const quote = QUOTES[windowIndex % QUOTES.length];
+  document.getElementById('quoteText').textContent = quote.text;
+  document.getElementById('quoteAuthor').textContent = `— ${quote.author}`;
+}
 
-  const drew = sampleVideoAt(x, y, canvas);
-  if (!drew) return;
+function renderCountdown() {
+  const windowIndex = getCurrentWindowIndex();
+  const nextChangeAt = (windowIndex + 1) * ROTATION_MS;
+  const remaining = Math.max(nextChangeAt - Date.now(), 0);
 
-  document.body.appendChild(canvas);
+  const h = String(Math.floor(remaining / 3600000)).padStart(2, '0');
+  const m = String(Math.floor((remaining % 3600000) / 60000)).padStart(2, '0');
+  const s = String(Math.floor((remaining % 60000) / 1000)).padStart(2, '0');
 
-  // trigger the fade-out shortly after appearing, then remove it
-  requestAnimationFrame(() => {
-    setTimeout(() => canvas.classList.add('fade-out'), 50);
+  document.getElementById('quoteTimer').textContent = `${h}:${m}:${s}`;
+
+  // if the countdown hits zero, swap in the new quote right away
+  if (remaining <= 0) renderQuote();
+}
+
+renderQuote();
+renderCountdown();
+setInterval(renderCountdown, 1000);
+
+// ===== Visitor count =====
+// Uses a free, no-signup counter API (countapi.xyz) — every page load
+// increments and returns the total. If the request fails for any reason
+// (offline, API down), it just shows a dash instead of breaking the page.
+const VISITOR_NAMESPACE = 'faisalkhan-portfolio-2026';
+const VISITOR_KEY = 'visits';
+
+fetch(`https://api.countapi.xyz/hit/${VISITOR_NAMESPACE}/${VISITOR_KEY}`)
+  .then((res) => res.json())
+  .then((data) => {
+    document.getElementById('visitorCount').textContent = `${data.value} visits`;
+  })
+  .catch(() => {
+    document.getElementById('visitorCount').textContent = '';
   });
-  setTimeout(() => canvas.remove(), STAMP_LIFETIME_MS);
-}
-
-window.addEventListener('mousemove', (e) => {
-  // don't stamp while hovering the name/tagline/contact content
-  if (e.target.closest('.wrap')) return;
-  if (bgVideo.readyState < 2) return;
-
-  const dx = e.clientX - lastSpawn.x;
-  const dy = e.clientY - lastSpawn.y;
-  if (Math.hypot(dx, dy) < MIN_SPAWN_DISTANCE) return;
-
-  lastSpawn = { x: e.clientX, y: e.clientY };
-  spawnStamp(e.clientX, e.clientY);
-});

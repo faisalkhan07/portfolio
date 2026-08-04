@@ -1,6 +1,7 @@
 :root {
-  --text: #F4F1E8;
-  --muted: #B8B8B8;
+  --bg: #EAF0E6;
+  --ink: #141414;
+  --muted: #5B5F58;
   --red: #FF1E1E;
   --font-display: 'Anton', sans-serif;
   --font-body: 'Space Grotesk', system-ui, sans-serif;
@@ -10,61 +11,14 @@
 
 html, body {
   height: 100%;
-  background: #111111;
-  color: var(--text);
+  background: var(--bg);
+  color: var(--ink);
   font-family: var(--font-body);
   overflow-x: hidden;
 }
 
-/* ===== Background video ===== */
-.bg-video {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.video-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  background: rgba(0, 0, 0, 0.55);
-}
-
-/* ===== Pixel stamps: small canvases spawned at the cursor's position as it
-   moves over the video, each showing a zoomed crop of the video pixels at
-   that spot, then fading out and being removed — a trail of "samples"
-   instead of one box sliding around ===== */
-.pixel-stamp {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 90px;
-  height: 90px;
-  border-radius: 4px;
-  pointer-events: none;
-  z-index: 5;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
-  opacity: 1;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.pixel-stamp.fade-out {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.85);
-}
-
-@media (hover: none) {
-  /* touch devices have no real cursor to sample under, so skip it entirely */
-  .pixel-stamp { display: none; }
-}
-
 /* ===== Content ===== */
 .wrap {
-  position: relative;
-  z-index: 2;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -72,10 +26,6 @@ html, body {
   justify-content: center;
   text-align: center;
   padding: 24px;
-  pointer-events: none; /* let mouse events pass through the empty space to the video below */
-}
-.wrap > * {
-  pointer-events: auto; /* ...but keep the actual text/links/button interactive */
 }
 
 .name {
@@ -95,7 +45,7 @@ html, body {
   font-size: 13px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text);
+  color: var(--ink);
   max-width: 460px;
   line-height: 1.7;
 }
@@ -108,8 +58,8 @@ html, body {
   gap: 26px;
 }
 .icon-links a {
-  color: var(--text);
-  opacity: 0.8;
+  color: var(--ink);
+  opacity: 0.75;
   transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
 }
 .icon-links a:hover {
@@ -124,20 +74,55 @@ html, body {
   display: block;
 }
 
-/* ===== Contact button ===== */
-.contact-btn {
-  display: inline-block;
-  margin-top: 40px;
-  background: var(--text);
-  color: #111111;
-  font-weight: 600;
-  font-size: 14px;
-  text-decoration: none;
-  padding: 12px 32px;
-  border-radius: 999px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+/* ===== Rotating quote ===== */
+.quote-block {
+  margin-top: 56px;
+  max-width: 480px;
 }
-.contact-btn:hover { transform: translateY(-2px); background: var(--red); color: var(--text); opacity: 1; }
+.quote-text {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.quote-text::before { content: '“'; }
+.quote-text::after { content: '”'; }
+
+.quote-author {
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.quote-timer {
+  margin-top: 14px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.timer-value {
+  color: var(--red);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Visitor count ===== */
+.visitor-count {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.eye-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
 
 /* ===== Flag ===== */
 .flag-footer {
